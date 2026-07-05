@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Protokół Diagnostyczny MŚP — Dotacje i Zgodność Regulacyjna</title>
+<style>
+  :root{
+    --ink:#12213B;
+    --paper:#EDE7DA;
+    --panel:#F8F5EC;
+    --stamp:#A63D2A;
+    --slate:#4C5C74;
+    --brass:#9C7A3C;
+    --line:#C9C0AC;
+    --serif: "Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --sans: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono: ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:var(--sans); line-height:1.5;
+    padding:28px 16px 60px;
+  }
+  .sheet{
+    max-width:740px; margin:0 auto; background:var(--panel);
+    border:1px solid var(--line); padding:36px 32px 28px;
+    box-shadow:0 1px 0 var(--line);
+  }
+  header.letterhead{
+    border-bottom:3px double var(--ink); padding-bottom:14px; margin-bottom:24px;
+  }
+  .eyebrow{
+    font-family:var(--mono); font-size:11px; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--slate); margin-bottom:6px;
+  }
+  h1{
+    font-family:var(--serif); font-weight:600; font-size:26px; margin:0 0 6px;
+    color:var(--ink);
+  }
+  .subtitle{ color:var(--slate); font-size:14.5px; max-width:56ch; }
+  .author-line{
+    font-family:var(--mono); font-size:11.5px; color:var(--slate);
+    margin-top:12px;
+  }
+  section.para{ margin:26px 0; }
+  .para-head{
+    display:flex; align-items:baseline; gap:10px; margin-bottom:10px;
+    border-bottom:1px solid var(--line); padding-bottom:6px;
+  }
+  .para-num{
+    font-family:var(--serif); font-size:19px; color:var(--brass); font-weight:600;
+  }
+  .para-title{ font-family:var(--serif); font-size:17px; font-weight:600; }
+  fieldset{ border:none; padding:0; margin:0; }
+  label.field{ display:block; margin:10px 0; font-size:14.5px; }
+  select, input[type=text]{
+    width:100%; padding:9px 10px; font-family:var(--sans); font-size:14.5px;
+    border:1px solid var(--line); background:#fff; color:var(--ink); margin-top:4px;
+  }
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:560px){ .row2{grid-template-columns:1fr;} }
+  .check-row{ display:flex; align-items:flex-start; gap:8px; margin:6px 0; font-size:14px; }
+  .check-row input{ margin-top:3px; }
+  .hint{ font-size:12.5px; color:var(--slate); margin-top:4px; }
+
+  button.primary{
+    font-family:var(--sans); font-weight:600; font-size:15px;
+    background:var(--ink); color:var(--panel); border:none;
+    padding:13px 22px; cursor:pointer; margin-top:8px;
+  }
+  button.primary:hover{ background:#1c3355; }
+  button.ghost{
+    font-family:var(--sans); font-size:13px; background:transparent;
+    color:var(--ink); border:1px solid var(--ink); padding:9px 16px; cursor:pointer;
+  }
+
+  #wynik{ margin-top:34px; display:none; }
+  .verdict-wrap{ position:relative; border:1px solid var(--line); padding:22px 22px 18px; background:#fff; }
+  .stamp{
+    position:absolute; top:-18px; right:18px; width:118px; height:118px;
+    border:3px solid var(--stamp); border-radius:50%; color:var(--stamp);
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    font-family:var(--serif); font-weight:700; font-size:11.5px; letter-spacing:.03em;
+    transform:rotate(-9deg) scale(0); opacity:.85; mix-blend-mode:multiply;
+    padding:8px;
+  }
+  .stamp .inner{ border:1px solid var(--stamp); border-radius:50%; width:100%; height:100%;
+    display:flex; align-items:center; justify-content:center; padding:6px; }
+  @media (prefers-reduced-motion: no-preference){
+    .stamp.show{ animation: stampdown .38s cubic-bezier(.2,1.6,.4,1) forwards; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .stamp.show{ transform:rotate(-9deg) scale(1); }
+  }
+  @keyframes stampdown{
+    0%{ transform:rotate(-9deg) scale(0); }
+    70%{ transform:rotate(-9deg) scale(1.12); }
+    100%{ transform:rotate(-9deg) scale(1); }
+  }
+
+  .verdict-title{ font-family:var(--serif); font-size:20px; margin:0 0 4px; }
+  .verdict-range{ font-family:var(--mono); font-size:22px; color:var(--ink); margin:6px 0 2px; }
+  .verdict-caveat{ font-size:12px; color:var(--slate); margin-bottom:16px; }
+
+  .tag{
+    display:inline-block; font-family:var(--mono); font-size:10px; letter-spacing:.05em;
+    padding:2px 6px; border:1px solid var(--slate); color:var(--slate); margin-right:8px;
+  }
+  .tag.fakt{ border-color:var(--ink); color:var(--ink); }
+  .tag.szacunek{ border-color:var(--brass); color:var(--brass); }
+  .tag.hipoteza{ border-color:var(--stamp); color:var(--stamp); }
+
+  .program{ padding:12px 0; border-top:1px solid var(--line); }
+  .program:first-of-type{ border-top:none; }
+  .program-name{ font-weight:600; font-size:14.5px; margin-bottom:3px; }
+  .program-note{ font-size:13px; color:var(--slate); }
+
+  .risk-box{
+    margin-top:16px; padding:12px 14px; border-left:3px solid var(--stamp);
+    background:#fbf2ee; font-size:13.5px;
+  }
+
+  .cennik{ margin-top:22px; }
+  .cennik-title{ font-family:var(--serif); font-size:15px; font-weight:600; margin-bottom:8px; }
+  .cennik-row{
+    display:flex; justify-content:space-between; gap:14px; padding:9px 0;
+    border-top:1px solid var(--line); font-size:13.5px;
+  }
+  .cennik-row:first-of-type{ border-top:none; }
+  .cennik-name{ max-width:62%; }
+  .cennik-name .desc{ display:block; color:var(--slate); font-size:12px; margin-top:2px; }
+  .cennik-price{ font-family:var(--mono); white-space:nowrap; font-weight:600; }
+  .cennik-note{ font-size:11.5px; color:var(--slate); margin-top:8px; }
+
+  .cta{ margin-top:24px; padding-top:18px; border-top:1px solid var(--line); }
+  .cta p{ font-size:13.5px; color:var(--slate); max-width:56ch; }
+  .cta-buttons{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+
+  footer{
+    margin-top:36px; padding-top:16px; border-top:3px double var(--ink);
+    font-size:11.5px; color:var(--slate); font-family:var(--mono);
+  }
+  footer .disclaimer{ margin-top:10px; font-family:var(--sans); font-size:12px; line-height:1.5; }
+
+  @media print{
+    body{ background:#fff; padding:0; }
+    .sheet{ border:none; box-shadow:none; max-width:none; }
+    button, .no-print{ display:none !important; }
+    .stamp{ opacity:.7; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+
+  <header class="letterhead">
+    <div class="eyebrow">Protokół diagnostyczny · wersja przesiewowa</div>
+    <h1>Diagnostyka Dotacji i Zgodności Regulacyjnej dla MŚP</h1>
+    <div class="subtitle">Automatyczne wstępne rozpoznanie potencjału dotacyjnego oraz ryzyk zgodności regulacyjnej (NIS2/uKSC, amortyzacja, fundusze szkoleniowe) na podstawie profilu Państwa działalności. Wynik ma charakter przesiewowy — nie zastępuje pełnego audytu.</div>
+    <div class="author-line">
+      Opracowanie metodyki: mgr Jakub Wielogórski · WSNHiD w Poznaniu / Collegium Da Vinci, 2012 · specjalizacja: pozyskiwanie funduszy UE<br>
+      Auraloom Labs · doradztwo grantowo-regulacyjne dla MŚP
+    </div>
+  </header>
+
+  <form id="form">
+
+    <section class="para">
+      <div class="para-head"><span class="para-num">§1</span><span class="para-title">Profil działalności</span></div>
+      <div class="row2">
+        <label class="field">Sektor działalności
+          <select id="sektor" required>
+            <option value="">— wybierz —</option>
+            <option value="agro">Rolnictwo i hodowla</option>
+            <option value="produkcja">Produkcja / przemysł</option>
+            <option value="budownictwo">Budownictwo / OZE / HVAC</option>
+            <option value="it">IT / technologia</option>
+            <option value="uslugi">Usługi B2B</option>
+            <option value="zdrowie">Ochrona zdrowia</option>
+            <option value="handel">Handel / e-commerce</option>
+            <option value="inne">Inne</option>
+          </select>
+        </label>
+        <label class="field">Liczba pracowników
+          <select id="wielkosc" required>
+            <option value="">— wybierz —</option>
+            <option value="mikro">1–9 (mikroprzedsiębiorstwo)</option>
+            <option value="male">10–49 (małe)</option>
+            <option value="srednie">50–249 (średnie)</option>
+            <option value="duze">250+ (duże)</option>
+          </select>
+        </label>
+      </div>
+    </section>
+
+    <section class="para">
+      <div class="para-head"><span class="para-num">§2</span><span class="para-title">Plany inwestycyjne (12 mies.)</span></div>
+      <div class="row2">
+        <label class="field">Planowana inwestycja w środki trwałe / cyfryzację?
+          <select id="inwestycja">
+            <option value="nie">Nie</option>
+            <option value="tak">Tak</option>
+          </select>
+        </label>
+        <label class="field">Orientacyjna wartość inwestycji
+          <select id="kwota">
+            <option value="0">— nie dotyczy —</option>
+            <option value="50000">do 50 000 PLN</option>
+            <option value="200000">50 000–200 000 PLN</option>
+            <option value="500000">200 000–500 000 PLN</option>
+            <option value="1000000">powyżej 500 000 PLN</option>
+          </select>
+        </label>
+      </div>
+    </section>
+
+    <section class="para">
+      <div class="para-head"><span class="para-num">§3</span><span class="para-title">Ekspozycja regulacyjna</span></div>
+      <div class="check-row">
+        <input type="checkbox" id="nis2">
+        <label for="nis2">Firma świadczy usługi lub utrzymuje infrastrukturę w sektorach: energetyka, zdrowie, usługi cyfrowe, żywność, woda, transport, przestrzeń kosmiczna, administracja publiczna</label>
+      </div>
+      <div class="hint">Zaznaczenie sugeruje potrzebę weryfikacji klasyfikacji NIS2 / ustawa o KSC.</div>
+    </section>
+
+    <section class="para">
+      <div class="para-head"><span class="para-num">§4</span><span class="para-title">Historia wsparcia</span></div>
+      <label class="field">Czy firma korzystała z dotacji UE w ostatnich 3 latach?
+        <select id="historia">
+          <option value="nie">Nie</option>
+          <option value="tak">Tak</option>
+        </select>
+      </label>
+    </section>
+
+    <button type="submit" class="primary">Generuj protokół diagnostyczny</button>
+  </form>
+
+  <div id="wynik">
+    <div class="verdict-wrap">
+      <div id="stamp" class="stamp"><div class="inner"><span id="stamp-text">WSTĘPNA<br>OCENA</span></div></div>
+      <div class="verdict-title" id="verdict-title">—</div>
+      <div class="verdict-range" id="verdict-range">—</div>
+      <div class="verdict-caveat">
+        <span class="tag szacunek">SZACUNEK MODELOWY</span>
+        Wartość orientacyjna oparta na uproszczonej heurystyce (sektor × wielkość × plany inwestycyjne). Nie stanowi gwarancji przyznania środków ani wyceny usługi doradczej.
+      </div>
+
+      <div id="programy"></div>
+      <div id="ryzyko"></div>
+
+      <div class="cennik">
+        <div class="cennik-title">Dalsze kroki — orientacyjny cennik</div>
+        <div class="cennik-row">
+          <div class="cennik-name">Diagnostyka ekspresowa<span class="desc">rozmowa 45–60 min + pisemne potwierdzenie dopasowania (2–3 str.)</span></div>
+          <div class="cennik-price">490–890 PLN</div>
+        </div>
+        <div class="cennik-row">
+          <div class="cennik-name">Audyt Korzyści (pełny)<span class="desc">mapa dotacji, zgodność regulacyjna, rekomendacje podatkowe, sekwencjonowanie</span></div>
+          <div class="cennik-price">3 500–8 500 PLN</div>
+        </div>
+        <div class="cennik-row">
+          <div class="cennik-name">Wsparcie aplikacyjne<span class="desc">przygotowanie konkretnego wniosku; opcjonalnie success fee 3–8%</span></div>
+          <div class="cennik-price">od 4 000 PLN</div>
+        </div>
+        <div class="cennik-row">
+          <div class="cennik-name">Audyt zgodności NIS2 / uKSC<span class="desc">klasyfikacja podmiotu, analiza luk, plan wdrożenia</span></div>
+          <div class="cennik-price">3 000–12 000 PLN</div>
+        </div>
+        <div class="cennik-note">Ceny orientacyjne, kalibrowane do wielkości i złożoności podmiotu — pełny cennik z metodologią wyceny: CENNIK.md.</div>
+      </div>
+    </div>
+
+    <div class="cta">
+      <p><strong>To jest przesiew, nie audyt.</strong> Pełna analiza obejmuje weryfikację aktualnych naborów, kwalifikowalności kosztów, klasyfikacji regulacyjnej i sekwencjonowania wniosków — jak w raportach przygotowywanych dotychczas dla klientów Auraloom Labs.</p>
+      <div class="cta-buttons no-print">
+        <a id="mailto-btn" href="#" class="primary" style="text-decoration:none; display:inline-block;">Wyślij protokół do eksperta</a>
+        <button type="button" class="ghost" onclick="window.print()">Pobierz jako PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    mgr Jakub Wielogórski · Auraloom Labs · Turek, Wielkopolska Wschodnia<br>
+    Kontakt: jakub.wielogorski@gmail.com · +48 785 426 622
+    <div class="hint" style="margin-top:8px;">Pełna metodyka i cennik usług: zobacz METODOLOGIA.md i CENNIK.md w repozytorium.</div>
+    <div class="disclaimer">
+      Niniejsze narzędzie stanowi automatyczny przesiew wstępny i nie jest poradą prawną, podatkową ani gwarancją uzyskania finansowania. Stawki, terminy naborów i kwalifikowalność wymagają każdorazowej weryfikacji na dzień złożenia wniosku. Klasyfikacje: <span class="tag fakt">FAKT REGULACYJNY</span> potwierdzony przepis, <span class="tag szacunek">SZACUNEK MODELOWY</span> wartość obliczona heurystycznie, <span class="tag hipoteza">HIPOTEZA STRATEGICZNA</span> wnioskowanie wymagające weryfikacji.
+    </div>
+  </footer>
+
+</div>
+
+<script>
+// ---- KONFIGURACJA KONTAKTU: podmień poniższe wartości przed publikacją ----
+const CONFIG = {
+  email: "jakub.wielogorski@gmail.com",
+  telefon: "+48 785 426 622",
+  imie: "Jakub Wielogórski"
+};
+
+const PROGRAMS = {
+  agro: [
+    {name:"Dopłaty i interwencje sektorowe — Plan Strategiczny WPR / ARiMR", tag:"fakt", note:"System dopłat i interwencji sektorowych działa corocznie; konkretna stawka i termin naboru wymagają weryfikacji na dzień składania wniosku."},
+    {name:"KPO — inwestycje w gospodarstwach i przetwórstwie rolno-spożywczym", tag:"fakt", note:"Krajowy Plan Odbudowy przewiduje komponenty modernizacyjne dla sektora rolnego."},
+    {name:"Ekspozycja na wymogi obszarów chronionych (Natura 2000)", tag:"hipoteza", note:"Przy lokalizacji w/blisko obszarów chronionych możliwe powiązanie dopłat z warunkowością środowiskową — wymaga sprawdzenia lokalizacji działek."}
+  ],
+  produkcja: [
+    {name:"FEnIKS — dekarbonizacja i efektywność energetyczna przemysłu", tag:"fakt", note:"Program krajowy z komponentami dla sektora przemysłowego."},
+    {name:"KPO — cyfryzacja i automatyzacja procesów produkcyjnych", tag:"fakt", note:"Dostępność zależy od aktualnego harmonogramu naborów."},
+    {name:"Jednorazowa amortyzacja środków trwałych (art. 22k PIT/CIT)", tag:"fakt", note:"Instrument podatkowy, nie dotacyjny — realna oszczędność podatkowa bez konieczności wygrania konkursu."}
+  ],
+  budownictwo: [
+    {name:"Pozycjonowanie wykonawcy w programie Czyste Powietrze", tag:"fakt", note:"Program adresowany do właścicieli domów jednorodzinnych — firma instalacyjna zyskuje pośrednio przez większy popyt klientów końcowych z dofinansowaniem."},
+    {name:"FEW — komponenty OZE i termomodernizacji", tag:"fakt", note:"Regionalny program wsparcia inwestycji w odnawialne źródła energii."},
+    {name:"Jednorazowa amortyzacja sprzętu i pojazdów firmowych", tag:"fakt", note:"Dotyczy zakupów środków trwałych związanych z działalnością instalacyjną."}
+  ],
+  it: [
+    {name:"Dig.IT (ARP) — dotacja na transformację cyfrową MŚP", tag:"fakt", note:"Program dotacyjny do 850 000 PLN — wymaga weryfikacji aktualnego naboru i kryteriów kwalifikowalności."},
+    {name:"KPO — cyfryzacja usług i produktów", tag:"fakt", note:"Komponent wsparcia dla przedsiębiorstw technologicznych."},
+    {name:"Ulga IP BOX", tag:"fakt", note:"Instrument podatkowy dla dochodów z kwalifikowanych praw własności intelektualnej — wymaga odrębnej analizy struktury przychodów."}
+  ],
+  uslugi: [
+    {name:"Baza Usług Rozwojowych (BUR) / Krajowy Fundusz Szkoleniowy (KFS)", tag:"fakt", note:"Dofinansowanie szkoleń i rozwoju kompetencji pracowników — dostępne w trybie ciągłym z limitami rocznymi."},
+    {name:"Jednorazowa amortyzacja przy planowanych inwestycjach", tag:"fakt", note:"Dotyczy zakupu wyposażenia biurowego, IT, floty."},
+    {name:"Weryfikacja formy opodatkowania (ryczałt vs. zasady ogólne)", tag:"hipoteza", note:"Przy części profili usługowych zmiana formy opodatkowania bywa korzystniejsza — wymaga indywidualnej kalkulacji."}
+  ],
+  zdrowie: [
+    {name:"Kontraktowanie NFZ / rozszerzenie zakresu usług", tag:"hipoteza", note:"Zależne od specjalizacji i lokalnego planu zakupu świadczeń."},
+    {name:"Jednorazowa amortyzacja sprzętu medycznego (do ok. 213 000 PLN)", tag:"fakt", note:"Instrument podatkowy dla nowych środków trwałych w danym roku podatkowym."},
+    {name:"FERS — instrumenty telemedyczne", tag:"hipoteza", note:"Dostępność zależy od aktualnego harmonogramu konkursów resortowych."}
+  ],
+  handel: [
+    {name:"Dig.IT (ARP) — cyfryzacja procesów sprzedażowych", tag:"fakt", note:"Dotyczy wdrożeń e-commerce i integracji systemów sprzedaży."},
+    {name:"FEW — wsparcie cyfryzacji MŚP", tag:"fakt", note:"Program regionalny, harmonogram naborów zmienny."},
+    {name:"KFS — szkolenia zespołu sprzedaży i obsługi klienta", tag:"fakt", note:"Dostępne w trybie ciągłym z limitami rocznymi."}
+  ],
+  inne: [
+    {name:"Baza Usług Rozwojowych (BUR) / KFS", tag:"fakt", note:"Uniwersalny instrument wsparcia rozwoju kompetencji, niezależny od branży."},
+    {name:"Jednorazowa amortyzacja środków trwałych", tag:"fakt", note:"Instrument podatkowy dostępny dla większości profili działalności."},
+    {name:"Przegląd formy opodatkowania", tag:"hipoteza", note:"Wymaga indywidualnej analizy struktury przychodów i kosztów."}
+  ]
+};
+
+const SIZE_BASE = { mikro:8000, male:25000, srednie:70000, duze:150000 };
+
+const form = document.getElementById('form');
+const wynik = document.getElementById('wynik');
+const stamp = document.getElementById('stamp');
+
+form.addEventListener('submit', function(e){
+  e.preventDefault();
+
+  const sektor = document.getElementById('sektor').value;
+  const wielkosc = document.getElementById('wielkosc').value;
+  if(!sektor || !wielkosc){ return; }
+
+  const inwestycja = document.getElementById('inwestycja').value === 'tak';
+  const kwota = parseInt(document.getElementById('kwota').value, 10) || 0;
+  const nis2 = document.getElementById('nis2').checked;
+  const historia = document.getElementById('historia').value === 'tak';
+
+  // heurystyka zakresu potencjału
+  let base = SIZE_BASE[wielkosc];
+  let low = base * 0.6;
+  let high = base * 1.4;
+  if(inwestycja){ low += kwota * 0.15; high += kwota * 0.35; }
+  if(!historia){ high *= 1.1; } // większy niewykorzystany potencjał, jeśli brak historii
+
+  const fmt = n => Math.round(n/1000)*1000;
+  document.getElementById('verdict-range').textContent =
+    fmt(low).toLocaleString('pl-PL') + ' – ' + fmt(high).toLocaleString('pl-PL') + ' PLN';
+
+  let verdictLabel = 'UMIARKOWANY POTENCJAŁ';
+  if(high > 150000) verdictLabel = 'WYSOKI POTENCJAŁ';
+  if(high < 40000) verdictLabel = 'OGRANICZONY POTENCJAŁ';
+  document.getElementById('verdict-title').textContent = 'Ocena wstępna: ' + verdictLabel;
+  document.getElementById('stamp-text').innerHTML = verdictLabel.split(' ')[0] + '<br>' + (verdictLabel.split(' ')[1]||'');
+
+  const progList = PROGRAMS[sektor] || PROGRAMS.inne;
+  document.getElementById('programy').innerHTML = progList.map(p => `
+    <div class="program">
+      <div class="program-name"><span class="tag ${p.tag}">${p.tag === 'fakt' ? 'FAKT REGULACYJNY' : p.tag === 'hipoteza' ? 'HIPOTEZA STRATEGICZNA' : 'SZACUNEK MODELOWY'}</span>${p.name}</div>
+      <div class="program-note">${p.note}</div>
+    </div>
+  `).join('');
+
+  const ryzykoEl = document.getElementById('ryzyko');
+  if(nis2){
+    ryzykoEl.innerHTML = `<div class="risk-box"><span class="tag hipoteza">HIPOTEZA STRATEGICZNA</span> Wskazany profil działalności sugeruje potencjalną kwalifikację jako podmiot kluczowy lub ważny w rozumieniu dyrektywy NIS2 / ustawy o KSC. Wymaga to formalnej klasyfikacji — nieprawidłowa ocena własnego statusu jest częstym błędem, niosącym ryzyko sankcji administracyjnych.</div>`;
+  } else {
+    ryzykoEl.innerHTML = '';
+  }
+
+  // mailto lead capture
+  const subject = encodeURIComponent('Zapytanie: diagnostyka MŚP — ' + sektor);
+  const body = encodeURIComponent(
+`Wynik protokołu diagnostycznego:
+
+Sektor: ${sektor}
+Wielkość: ${wielkosc}
+Planowana inwestycja: ${inwestycja ? 'tak (' + kwota.toLocaleString('pl-PL') + ' PLN)' : 'nie'}
+Ekspozycja NIS2/KSC: ${nis2 ? 'tak' : 'nie'}
+Wcześniejsze dotacje UE: ${historia ? 'tak' : 'nie'}
+Orientacyjny potencjał: ${fmt(low).toLocaleString('pl-PL')}–${fmt(high).toLocaleString('pl-PL')} PLN
+
+Proszę o kontakt w sprawie diagnostyki ekspresowej (490–890 PLN) lub pełnego Audytu Korzyści.`
+  );
+  document.getElementById('mailto-btn').href = `mailto:${CONFIG.email}?subject=${subject}&body=${body}`;
+
+  wynik.style.display = 'block';
+  stamp.classList.remove('show');
+  void stamp.offsetWidth; // reflow to restart animation
+  stamp.classList.add('show');
+  wynik.scrollIntoView({behavior:'smooth', block:'start'});
+});
+</script>
+
+</body>
+</html>
