@@ -1,21 +1,24 @@
-MIT License
+Licencja Ograniczonego Użytku Publicznego
 
-Copyright (c) 2026 Jakub Wielogórski
+Copyright © 2026 Jakub Wielogórski / Auraloom Labs. Wszelkie prawa zastrzeżone, z wyjątkiem uprawnień wyraźnie przyznanych poniżej.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+Dozwolone bez odrębnej zgody
+Uruchamianie i korzystanie z narzędzia (lokalnie lub pod publicznie udostępnionym adresem) w celu własnej, niekomercyjnej autodiagnozy.
+Przeglądanie kodu źródłowego w celach edukacyjnych.
+Forkowanie repozytorium wyłącznie w celach edukacyjnych lub do prywatnego testowania, pod warunkiem zachowania niniejszej licencji oraz informacji o autorstwie w kodzie i stopce.
+Cytowanie fragmentów metodyki (METODOLOGIA.md) z podaniem źródła.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+Wymaga pisemnej zgody autora
+Usuwanie, podmiana lub maskowanie danych kontaktowych i oznaczeń autorstwa.
+Komercyjna redystrybucja, odsprzedaż, sublicencjonowanie lub rebranding narzędzia albo jego pochodnych jako własnego produktu.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+Wykorzystanie logiki punktującej, systemu etykiet epistemicznych ([FAKT REGULACYJNY] / [SZACUNEK MODELOWY] / [HIPOTEZA STRATEGICZNA]) lub struktury cennika jako podstawy konkurencyjnego produktu, usługi SaaS lub oferty doradczej.
+
+Publiczne wdrożenie zmodyfikowanej wersji narzędzia pod inną marką bez odniesienia do oryginalnego autorstwa.
+
+Brak gwarancji
+
+Narzędzie dostarczane jest w stanie „as-is”, bez jakichkolwiek gwarancji, w tym gwarancji przydatności do określonego celu. Autor nie ponosi odpowiedzialności za decyzje biznesowe, podatkowe lub prawne podjęte na podstawie wyników generowanych przez narzędzie. Wyniki mają charakter przesiewowy i informacyjny — nie stanowią porady prawnej, podatkowej ani finansowej.
+
+Kontakt w sprawie licencji
+jakub.wielogorski@gmail.com
