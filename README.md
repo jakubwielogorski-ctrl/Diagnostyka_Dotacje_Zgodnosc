@@ -13,21 +13,16 @@ Każdy wniosek jest oznaczony etykietą epistemiczną — patrz METODOLOGIA.md.
 Szybki start
 Lokalnie: 
 - pobierz diagnostyka-dotacje-zgodnosc.html i otwórz w dowolnej przeglądarce. Zero instalacji, zero zależności.
-Hosting (GitHub Pages):
-- Wrzuć repozytorium na GitHub.
-Settings → Pages → Source: branch main, folder /root.
-
-Po chwili narzędzie jest dostępne pod adresem https://<użytkownik>.github.io/<repo>/diagnostyka-dotacje-zgodnosc.html.
-
-Pełne instrukcje wdrożenia, edycji i obsługi leadów: INSTRUKCJA-OBSLUGI.md.
-
-Struktura repozytorium
-Code
+  
 Ograniczenia
-
 To narzędzie przesiewowe, nie audyt. Nie zastępuje indywidualnej weryfikacji aktualnych naborów, kwalifikowalności kosztów ani klasyfikacji regulacyjnej. Wyniki wymagają potwierdzenia przez doradcę — patrz sekcja "Ograniczenia" w METODOLOGIA.md.
+
 Licencja
 Ograniczone użycie publiczne — patrz LICENSE.md. Kod można uruchamiać i przeglądać swobodnie; komercyjna redystrybucja lub rebranding wymaga zgody autora.
+
 Kontakt
-Jakub Wielogórski · Auraloom Labs · Turek, Wielkopolska Wschodnia
-jakub.wielogorski@gmail.com · +48 785 426 622
+Jakub Wielogórski 
+· Auraloom Labs · 
+Turek, Wielkopolska Wschodnia
+jakub.wielogorski@gmail.com 
+· +48 785 426 622
